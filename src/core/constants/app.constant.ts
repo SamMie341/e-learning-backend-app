@@ -1,0 +1,6 @@
+export const APP_CONSTANTS = {
+    DEFAULT_PAGE: 1,
+    DEFAULT_LIMIT: 10,
+    MAX_FILE_SIZE_MB: 50,
+    PASSWORD_MIX_LENGTH: 8,
+};
