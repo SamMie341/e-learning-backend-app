@@ -25,9 +25,9 @@ async function bootstrap() {
 
   app.useGlobalFilters(new GlobalExceptionFilter());
 
-  const port = configService.get<number>('port') || 4000;
+  const port = configService.get<number>('port') || process.env.PORT || 4000;
 
-  await app.listen(port);
-  logger.log(`🚀 Application is running on: http://localhost:${port}/api/v1`);
+  await app.listen(port, '0.0.0.0');
+  logger.log(`🚀 Application is running on: ${port}`);
 }
 bootstrap();
