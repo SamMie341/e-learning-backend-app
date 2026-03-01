@@ -2,8 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 // import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { TransformInterceptor } from './core/interceptors/transform.interceptor';
-import { GlobalExceptionFilter } from './core/exceptions/global-exception.filter';
+// import { TransformInterceptor } from './core/interceptors/transform.interceptor';
+// import { GlobalExceptionFilter } from './core/exceptions/global-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +11,10 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   app.enableCors();
+  app.use((req, res, next) => {
+    console.log(`🚨 [INCOMING REQUEST] ดักจับคำสั่ง: ${req.method} ${req.originalUrl}`);
+    next();
+  });
 
   app.setGlobalPrefix('api/v1');
 
@@ -21,9 +25,9 @@ async function bootstrap() {
     }),
   );
 
-  app.useGlobalInterceptors(new TransformInterceptor());
+  // app.useGlobalInterceptors(new TransformInterceptor());
 
-  app.useGlobalFilters(new GlobalExceptionFilter());
+  // app.useGlobalFilters(new GlobalExceptionFilter());
 
   const port = process.env.PORT || 4000;
 
