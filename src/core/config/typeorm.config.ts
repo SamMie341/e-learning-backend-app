@@ -1,15 +1,25 @@
-import { ConfigService } from "@nestjs/config";
-import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { ConfigService } from '@nestjs/config';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-export const getTypeOrmConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
-    type: 'postgres',
-    host: configService.get<string>('database.host'),
-    port: configService.get<number>('database.port'),
-    username: configService.get<string>('database.username'),
-    password: configService.get<string>('database.password'),
-    database: configService.get<string>('database.name'),
+export const getTypeOrmConfig = async (
+    configService: ConfigService,
+): Promise<TypeOrmModuleOptions> => {
+    // เช็คว่าตอนนี้รันบน Production (Render) หรือไม่
+    const isProduction = configService.get<string>('NODE_ENV') === 'production';
 
-    autoLoadEntities: true,
+    return {
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
 
-    synchronize: configService.get<string>('environment') !== 'production',
-});
+        // ... (ตั้งค่า entities, synchronize ของเดิมปล่อยไว้เหมือนเดิม) ...
+
+        // 🌟 พระเอกของเราคือตรงนี้ครับ: เพิ่มการตั้งค่า SSL
+        ssl: isProduction
+            ? { rejectUnauthorized: false } // ถ้าขึ้น Render ให้เปิด SSL (Supabase บังคับ)
+            : false, // ถ้าทำในเครื่องตัวเอง (localhost) ไม่ต้องใช้ SSL
+    };
+};
