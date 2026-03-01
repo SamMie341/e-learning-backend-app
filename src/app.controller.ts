@@ -5,12 +5,8 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Get()
+  @Get('ping')
   getHello() {
-    return {
-      message: 'E-Learning API is running successfully',
-      version: '1.0.0',
-      status: 'Active',
-    };
+    return { status: 'OK', message: '🎉 แอป NestJS รับแขกได้แล้ว!' };
   }
 }
