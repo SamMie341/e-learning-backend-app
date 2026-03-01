@@ -25,7 +25,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new GlobalExceptionFilter());
 
-  const port = configService.get<number>('port') || process.env.PORT || 4000;
+  const port = process.env.PORT || 4000;
 
   await app.listen(port, '0.0.0.0');
   logger.log(`🚀 Application is running on: ${port}`);
