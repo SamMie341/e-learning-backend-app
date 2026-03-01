@@ -30,5 +30,6 @@ async function bootstrap() {
   await app.listen(port, '0.0.0.0');
   logger.log(`🚀 Application is running on: ${await app.getUrl()}`);
   logger.log(`🌍 Server is accepting connections on all interfaces (0.0.0.0) at port: ${port}`);
+  console.log(`[Ready] 🚀 Server is listening tightly on 0.0.0.0:${port}`);
 }
 bootstrap();
