@@ -1,13 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
+// import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './core/interceptors/transform.interceptor';
 import { GlobalExceptionFilter } from './core/exceptions/global-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
+  // const configService = app.get(ConfigService);
   const logger = new Logger('Bootstrap');
 
   app.enableCors();
@@ -28,6 +28,7 @@ async function bootstrap() {
   const port = process.env.PORT || 4000;
 
   await app.listen(port, '0.0.0.0');
-  logger.log(`🚀 Application is running on: ${port}`);
+  logger.log(`🚀 Application is running on: ${await app.getUrl}`);
+  logger.log(`🌍 Server is accepting connections on all interfaces (0.0.0.0) at port: ${port}`);
 }
 bootstrap();
